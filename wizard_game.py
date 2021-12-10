@@ -9,9 +9,12 @@ __email__ = "s8158863@rz.uni-frankfurt.de"
 import random 
 import cards
 import second_part_cards
+import copy
 import player
 
-#ToDo bot und Benutzerschnittstelle mit Anfrage und Hilfestellungen
+#ToDo bots und Benutzerschnittstelle mit Anfrage und Hilfestellungen
+#robust mit eingabe 
+#exit restart the game 
 
 
 def wizard():
@@ -23,7 +26,7 @@ def wizard():
     list_of_players = player.list_of_player(players)
 
     #dict with name and trick(trick is 0 at the beginning)
-    player_trick = player.create_player_trick(players,list_of_players)
+    player_trick = player.create_player_trick(players)
     
     #startplayer
     starting_num = random.randint(0,players - 1)
@@ -48,8 +51,16 @@ def wizard():
         #dealing cards to the player
         dealt_cards = cards.deal_cards(shuffled_deck,players,round)
 
+        #set trumpcard
+        remaining_deck = cards.remaining_cards(shuffled_deck,round,players)
+        trump_colour = second_part_cards.get_trump(remaining_deck)
+        print("Das ist die Trumpffarbe", trump_colour)
+        
+        
+
         #seperate the hand cards into the player number
         dict_handcards = second_part_cards.hand_cards(dealt_cards) 
+        copy_dict_handcards = copy.deepcopy(dict_handcards)
 
         #playing cards
         #first print whos turn it is and which card would be layed
@@ -72,14 +83,37 @@ def wizard():
             print("Es wurden diese Karten gelegt")
             print(pool)
             
-        #compare cards
-        #reset evrything
-        starting_num += 1
-        if starting_num == players:
-                starting_num = 0
+            #compare cards
+            #liste of the keys of dict_handcards
+            keys_handcards = list(dict_handcards)
+            
+
+            #liste of all winning cards in this round
+            winner_cards = second_part_cards.card_compare(pool,players,trump_colour)
+            
+
+            #liste of all winner this round
+            winner_this_round = second_part_cards.winner(winner_cards,copy_dict_handcards,keys_handcards)
+            print("Das ist der",winner_this_round)
+
+
+            #name
+            #namen ausgeben vom gewinner
+            winner_names = player.winner_names(list_of_players, winner_this_round)
+            print("Gewinner dieses Stiches ist")
+            print(winner_names)
+
+            #add up trick
+            result = player.add_trick(player_trick, winner_this_round)
+            print("Derzeitiger Stand",result)
+
+            #reset evrything
+            starting_num += 1
+            if starting_num == players:
+                    starting_num = 0
         
 
-#Gewinner definieren
+#GAnzGewinner definieren
 
 if __name__ =="__main__":
     wizard()
