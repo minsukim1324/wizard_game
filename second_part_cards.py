@@ -63,15 +63,36 @@ def laying_cards(hand_cards: List[Tuple[int,str]],index_of_card: int):
     return return_cards
 
 
-def compare_cards(n):
 
-    for i in range(n):
-        cards.bigger_card(pool[n],pool[n+1],trumpf)
+
+def card_compare (list_of_played_cards: List, players: int, trumpf: str):
+    """
+    
+    
+    """
+
+    winnerlist = []
+    winnerlist.append(list_of_played_cards[0])
+    a = winnerlist[0]
+    for i in range(1,(players)):
+        b = list_of_played_cards[i]
+        a = winnerlist[0]
+        x = cards.bigger_card(a,b,trumpf)
+        if x == 0:
+            del winnerlist [:]
+            winnerlist.append(list_of_played_cards[i])
+        elif x == 1:
+            winnerlist.append(list_of_played_cards[i])
+        else: 
+            x == 2
+            continue
+    return winnerlist
 
 
 
 if __name__ == "__main__":
     dealt_cards = [[(2,"rot"),(3,"rot")],[(4,"rot"),(5,"gruen")],[(6,"gelb"),(7,"rot")]]
+    
     print(hand_cards(dealt_cards))
     collection_of_handcards = hand_cards(dealt_cards)
     print(get_hand_cards(collection_of_handcards,2))
