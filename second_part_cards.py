@@ -36,6 +36,7 @@ def deal_cards_per_round(list_cards: List[Tuple[int, str]],round: int,player: in
 
     return return_list
 
+
 def hand_cards(dealt_cards):
     """
     
@@ -44,7 +45,7 @@ def hand_cards(dealt_cards):
 
     hand_cards = {}
     for i in range (len(dealt_cards)):
-        hand_cards.update({i + 1 : dealt_cards[i]})
+        hand_cards.update({i + 1: dealt_cards[i]})
 
     return hand_cards
 
@@ -55,13 +56,16 @@ def get_hand_cards(all_handcards: Dict, player_number: int) -> List[Tuple[int,st
 
     return all_handcards.get(player_number, "Invalid name")
 
+
 def laying_cards(hand_cards: List[Tuple[int,str]],index_of_card: int):
+    """
+    
+    """
 
     return_cards = hand_cards[index_of_card]
     hand_cards.remove(hand_cards[index_of_card])
 
     return return_cards
-
 
 
 
@@ -89,15 +93,42 @@ def card_compare (list_of_played_cards: List, players: int, trumpf: str):
     return winnerlist
 
 
+def get_trump(reamaining_deck: List[Tuple[int,str]]):
+    """
+    returns the colour of the trump card
+
+    """
+    trump_card = reamaining_deck[0]
+    
+    return trump_card[1]
+
+
+def winner(winner_cards: List[Tuple[int,str]],dict_handcards: Dict,list_keys: List[int]):
+    """
+
+
+    """
+    winner_list = []
+    for x in range(0,len(winner_cards)):
+
+        for i in range(1,len(list_keys)+1):
+            
+            if winner_cards[x] in dict_handcards[i]:
+                winner_list.append(list_keys[i-1])
+                break
+            
+            else:
+                continue
+
+    return winner_list
+
 
 if __name__ == "__main__":
-    dealt_cards = [[(2,"rot"),(3,"rot")],[(4,"rot"),(5,"gruen")],[(6,"gelb"),(7,"rot")]]
-    
-    print(hand_cards(dealt_cards))
-    collection_of_handcards = hand_cards(dealt_cards)
-    print(get_hand_cards(collection_of_handcards,2))
+    a = [("rot", 1)]
+    b = {1 : [("rot", 1),("rot", 2)], 2 : [("rgruen", 1),("adfasdf", 2)]}
+    c = [1,2]
 
-
+    print(winner(a,b,c))
 
     
     

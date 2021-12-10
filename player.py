@@ -6,7 +6,7 @@ This is a one of the modules for the game wizard.
 __author__ = "7389272, Kim",",Kang"
 __email__ = "s8158863@rz.uni-frankfurt.de" 
 
-from typing import Tuple, List
+from typing import Tuple, List, Dict
 
 def list_of_player(number_of_players = int) -> List[str]:
     """
@@ -17,14 +17,13 @@ def list_of_player(number_of_players = int) -> List[str]:
     :rtype [(str)]
     """
     list_of_players = []
-    for i in range(1,number_of_players + 1):
-            
-            player_name = str(input("Geben Sie den Namen des Spieler ein: "))
-            list_of_players.append(player_name)
+    for i in range(number_of_players):  
+        names = str(input("Bitte Name des Spielers eingeben: "))
+        list_of_players.append(names)
     
     return list_of_players
 
-def create_player_trick(number_players,list_of_player,dict_of_players={}):
+def create_player_trick(number_players,dict_of_players={}):
 
     """
     creates a dictionairy with the names as a key and the trick as the value
@@ -35,13 +34,31 @@ def create_player_trick(number_players,list_of_player,dict_of_players={}):
     :rtype {(str : int)}
     """
 
-    for i in range (number_players):
-        dict_of_players.update({list_of_player[i] : 0})
-
+    for i in range (1, number_players + 1):
+        dict_of_players.update({i : 0})
+    
     return dict_of_players
+
+
+def add_trick(dict_of_player: Dict,winner_list: List[int]):
+    for i in range (0,len(winner_list)):
+        dict_of_player[winner_list[i]]+=1
+
+    return dict_of_player
+
+
+def winner_names(list_of_player: List[str],list_of_winner: List[int]):
+    x = []
+
+    for i in range (len(list_of_winner)):
+        x.append(list_of_player[list_of_winner[i]-1])
+    
+    return x
 
 
 
 if __name__=="__main__":
-    print(list_of_player(3))
+    a = ["zion","minsu","asdfasdf"]
+    b = [3]
+    print(winner_names(a,b))
 
