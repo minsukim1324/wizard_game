@@ -48,7 +48,7 @@ def hand_cards(dealt_cards):
 
     return hand_cards
 
-def get_hand_cards(all_handcards: Dict, player_number: int):
+def get_hand_cards(all_handcards: Dict, player_number: int) -> List[Tuple[int,str]]:
     """
     
     """
@@ -57,11 +57,18 @@ def get_hand_cards(all_handcards: Dict, player_number: int):
 
 def laying_cards(hand_cards: List[Tuple[int,str]],index_of_card: int):
 
-    pool = []
-    pool.append(hand_cards[index_of_card])
+    return_cards = hand_cards[index_of_card]
     hand_cards.remove(hand_cards[index_of_card])
 
-    return pool
+    return return_cards
+
+
+def compare_cards(n):
+
+    for i in range(n):
+        cards.bigger_card(pool[n],pool[n+1],trumpf)
+
+
 
 if __name__ == "__main__":
     dealt_cards = [[(2,"rot"),(3,"rot")],[(4,"rot"),(5,"gruen")],[(6,"gelb"),(7,"rot")]]

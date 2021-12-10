@@ -24,7 +24,11 @@ def wizard():
 
     #dict with name and trick(trick is 0 at the beginning)
     player_trick = player.create_player_trick(players,list_of_players)
+    
+    #startplayer
+    starting_num = random.randint(0,players - 1)
 
+    #max rounds
     max_rounds = (60 - 1) // players
 #Schleife start
 #round start
@@ -35,8 +39,7 @@ def wizard():
         complete_deck = cards.create_card_list(15)
 
         #startplayer
-        random_num = random.randint(0,players - 1)
-        startplayer = list_of_players[random_num]
+        startplayer = list_of_players[starting_num]
         print("Der Spieler",startplayer,"startet die Runde")
         
         #shuffle cards
@@ -50,14 +53,20 @@ def wizard():
 
         #playing cards
         #first print whos turn it is and which card would be layed
-        for a in range(players):
-            print("Spieler ",list_of_players[random_num],"ist dran")
-            print(second_part_cards.get_hand_cards(dict_handcards, random_num + 1))
+        #pool is the list where all the cards will come in
+        pool = []
+        while len(dict_handcards[starting_num + 1])> 0:
+
+            print("Spieler ",list_of_players[starting_num],"ist dran")
+            print(second_part_cards.get_hand_cards(dict_handcards, starting_num + 1))
+            
+            #add card that are layed 
             card_index = int(input("Kartenindex angeben: "))
-            pool = second_part_cards.laying_cards(dict_handcards[random_num + 1],card_index)
-            random_num += 1
-            if random_num == players:
-                random_num = 0
+            pool.append(second_part_cards.laying_cards(dict_handcards[starting_num + 1],card_index))
+
+            starting_num += 1
+            if starting_num == players:
+                starting_num = 0
             for i in range(5):
                 print("")
             print("Es wurden diese Karten gelegt")
@@ -65,7 +74,11 @@ def wizard():
             
         #compare cards
         #reset evrything
+        starting_num += 1
+        if starting_num == players:
+                starting_num = 0
         
+
 #Gewinner definieren
 
 if __name__ =="__main__":
