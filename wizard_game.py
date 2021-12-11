@@ -11,6 +11,7 @@ import cards
 import second_part_cards
 import copy
 import player
+import sys
 
 #ToDo bots und Benutzerschnittstelle mit Anfrage und Hilfestellungen
 #robust mit eingabe 
@@ -20,16 +21,32 @@ import player
 def wizard():
     
     #number of players who is playing the game possible answer 2-5
-    try:
-        players = int(input("Anzahl der Spieler: "))
-        if players > 5 or players < 2:
-            raise ValueError
-    except ValueError:
-    #decide which output it will give 
-    print("Welche Gewinnmöglichkeit wollen sie wählen")
-    print("Für meisten Stiche gewonnen geben sie 'tricks' ein")
-    print("Für die meisten gewonnenen Runden geben sie 'rounds' ein")
-    winner_output = str(input("Geben sie ihre Wahl ein: "))
+    while True:
+        try:
+            print("Dieses Spiel können von 2 bis 5 Spieler spielen")
+            players = int(input("Anzahl der Spieler: "))
+            if players > 5 or players < 2:
+                raise ValueError
+            break
+        except ValueError:
+            print("Bitte eine ganze Zahl zwischen 2 bis 5!!")
+            print("")
+
+    #decide which output the game will give 
+    print("Welche Gewinnmöglichkeit möchten sie wählen")
+    print("")
+    print("Für meisten Stiche gewonnen geben Sie 't' ein")
+    print("Für die meisten gewonnenen Runden geben Sie 'r' ein")
+    while True:
+        try:
+            winner_output = str(input("Geben sie ihre Wahl ein:"))
+            if winner_output == 't' or winner_output == 'r':
+                break
+            else:
+                raise ValueError
+        except ValueError:
+            print("Bitte nur tricks oder rounds eingeben")
+    
     
     #list with the names in it
     list_of_players = player.list_of_player(players)
@@ -46,11 +63,15 @@ def wizard():
 
     #max rounds
     #max_rounds = (60 - 1) // players
-    max_rounds = 4 #Testfall
+    max_rounds = 2 #Testfall
 #Schleife start
 #round start
+
     for round in range(1,max_rounds + 1):
+        print("")
+        print("")
         print("Round",round,"is starting")
+        print("")
 
         #complete card deck
         complete_deck = cards.create_card_list(15)
@@ -58,6 +79,7 @@ def wizard():
         #startplayer
         startplayer = list_of_players[starting_num]
         print("Der Spieler",startplayer,"startet die Runde")
+        print("")
         
         #shuffle cards
         shuffled_deck = second_part_cards.shuffle_deck(complete_deck)
@@ -68,8 +90,8 @@ def wizard():
         #set trumpcard
         remaining_deck = cards.remaining_cards(shuffled_deck,round,players)
         trump_colour = second_part_cards.get_trump(remaining_deck)
-        print("Das ist die Trumpffarbe", trump_colour)
-        
+        print("Das ist die Trumpffarbe: ", trump_colour)
+        print("")
         
 
         #seperate the hand cards into the player number
@@ -85,18 +107,44 @@ def wizard():
             for n in range(players):
                 print("Spieler ",list_of_players[starting_num],"ist dran")
                 print(second_part_cards.get_hand_cards(dict_handcards, starting_num + 1))
-                
+                print("")
+
                 #add card that are layed 
-                card_index = int(input("Kartenindex angeben: "))
+                print("Der Kartenindex wird mit einer Ganzzahl angegeben")
+                print ("Sie sagt aus an welcher Stelle die Karte steht(0.Stelle,1.Stelle,...)")
+                print("Für einen neustart, geben Sie bitte 100 ein")
+                print("")
+                print("")
+                
+                while True:
+                    try:
+                        card_index = int(input("Kartenindex angeben(oder 100): "))
+                        
+                        #if card_index == 100:
+                            #here comes the funktion to quit the program
+                            #print("Sie haben das Spiel neu gestartet...")
+                            #dont know how to quit the programm 
+          
+                        if card_index > round - 1 or card_index < 0:
+                            raise ValueError
+                        break
+                    except ValueError:
+                        print("Bitte den index der Karte eingeben(Es startet bei 0)")
+                        print("")
+                        print("")
+                
+                #laying the selected card in the pool
                 pool.append(second_part_cards.laying_cards(dict_handcards[starting_num + 1],card_index))
 
+                #increase starting_num with 1 so the next player can make his move 
                 starting_num += 1
-                if starting_num == players:
+                if starting_num == players: #if the max player is reached the first player have to move again 
                     starting_num = 0
-                for i in range(5):
-                    print("")
+                
                 print("Es wurden diese Karten gelegt")
                 print(pool)
+                for d in range(3):
+                    print("")
             
             #compare cards
             #liste of the keys of dict_handcards
@@ -115,10 +163,14 @@ def wizard():
             winner_names = player.winner_names(list_of_players, winner_this_trick)
             print("Gewinner dieses Stiches ist")
             print(winner_names)
+            print("")
+            print("")
 
             #add up trick
             trick_result = player.add_points(player_trick, winner_this_trick)
             print("Derzeitiger Stand",trick_result)
+            print("")
+            print("")
 
              #reset evrything
             starting_num += 1
@@ -130,7 +182,7 @@ def wizard():
             
         #decide the round winner who has the most tricks
         round_winner = second_part_cards.end_winner(player_trick)
-        round_winner_names = second_part_cards.winner_names(list_of_players,round_winner)
+        round_winner_names = player.winner_names(list_of_players,round_winner)
 
         #add one point to the winner or winners in the name_round dictionairy
         player.add_points(player_round, round_winner)
@@ -138,6 +190,8 @@ def wizard():
         #print the roundwinners name
         print("Der Gewinner dieser Runde ist")
         print (round_winner_names)
+        for f in range(5):
+            print("")
             
 
            
@@ -145,7 +199,7 @@ def wizard():
     #GanzGewinner definieren
 
     #if funktion für die Auswahl des Gewinners
-    if winner_output == 'tricks':
+    if winner_output == 't':
 
         end_winner = second_part_cards.end_winner(player_trick)
         end_winner_names = second_part_cards.winner_names(list_of_players,end_winner)
@@ -160,7 +214,7 @@ def wizard():
     else:
 
         end_winner_round = second_part_cards.end_winner(player_round)
-        end_winner_round_names = second_part_cards.winner_names(list_of_players,end_winner_round)
+        end_winner_round_names = player.winner_names(list_of_players,end_winner_round)
         if len(end_winner_round_names)>1:
 
             print("Die Gewinner sind")

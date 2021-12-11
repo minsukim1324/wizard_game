@@ -10,14 +10,14 @@ from typing import Tuple, List, Dict
 import cards
 import operator
 
-from player import winner_names
 
-def shuffle_deck(list_cards: List[Tuple[int, str]]) -> List[List[Tuple[int, str]]]:
+
+def shuffle_deck(list_cards: List[List[Tuple[int, str]]]) -> List[List[Tuple[int, str]]]:
     """
     shuffles the given deck
 
     :param list_cards: list of cards 
-    :return [(int,str)] - returns the shuffled list
+    :return: [(int,str)] - returns the shuffled list
     :rtype [(int,str)]
     """
 
@@ -25,25 +25,15 @@ def shuffle_deck(list_cards: List[Tuple[int, str]]) -> List[List[Tuple[int, str]
     return list_cards
 
 
-def deal_cards_per_round(list_cards: List[Tuple[int, str]],round: int,player: int) -> List[List[Tuple[int, str]]]:
+
+def hand_cards(dealt_cards: List) -> Dict:
     """
-    deal cards pending on which round is playing 
-
-    :param list_cards: list of cards
-    :param players: number of players, with get cards
-    :param round: number of the round which is playing
-    :return: [[(int, str)]] - returns players sublist with the corresponding cards
-    :rtype [[(int, str)]]
-    """
-    return_list = cards.deal_cards(list_cards,player,round)
-
-    return return_list
-
-
-def hand_cards(dealt_cards):
-    """
+    returns a dictionary with int as a key from 1 to max num of the players that are playing
+    and a list of cards that were dealt to them.
     
-    
+    :param dealt_cards: list of all dealt cards for each player
+    :return: {int : [(int,str)]} - returns a dictonary for each player with their hand cards as the value
+    :rtype {int : [(int,str)]}
     """
 
     hand_cards = {}
@@ -54,14 +44,20 @@ def hand_cards(dealt_cards):
 
 def get_hand_cards(all_handcards: Dict, player_number: int) -> List[Tuple[int,str]]:
     """
-    
+    returns the value(handcards) of a certain key(number of the player) in the given dictionary
+
+    :param all_handcards: dictionary with all handcards from all playerself
+    :param player_number: is the number of the player (i.e first player -> 1)
+    :return: [(int,str)] -  returns handcards of the player
+    :rtype [(int,str)]
     """
 
-    return all_handcards.get(player_number, "Invalid name")
+    return all_handcards.get(player_number)
 
 
 def laying_cards(hand_cards: List[Tuple[int,str]],index_of_card: int):
     """
+
     
     """
 
@@ -135,9 +131,9 @@ def end_winner(player_trick: Dict):
 
     end_winner = []
     end_winner.append(sorted_list[0][0])
-    for i in range(len(sorted_list)):
+    for i in range(len(sorted_list)-1):
         if sorted_list[i][1] == sorted_list[i+1][1]:
-            end_winner.append(sorted_list[i-1][0])
+            end_winner.append(sorted_list[i+1][0])
             continue
         else: 
             break

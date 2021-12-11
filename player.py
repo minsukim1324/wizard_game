@@ -13,14 +13,20 @@ def list_of_player(players = int) -> List[str]:
     creates a list with all the names of the players
 
     :param number_of_players: gives the amount of player who is playing the game
-    :return [(int,str)] - returns a list with the names as strings
+    :return: [(int,str)] - returns a list with the names as strings
     :rtype [(str)]
     """
     list_of_players = []
     for i in range(players):  
-        names = str(input("Bitte Name des Spielers eingeben: "))
-        list_of_players.append(names)
-    
+        while True:
+            try:
+                names = str(input("Bitte Name des Spielers eingeben: "))
+                list_of_players.append(names)
+                if names == "":
+                    raise ValueError
+                break
+            except ValueError:
+                print("Bitte nur Buchstaben eingeben!!")
     return list_of_players
 
 def create_player_trick(players,dict_of_players={}):
