@@ -1,14 +1,14 @@
 """
-This is a one of the modules for the game wizard.
+Contains the functions all about the players in the card game wizard
 
 """
 
-__author__ = "7389272, Kim",",Kang"
+__author__ = "7389272, Kim, 7614343, Kang"
 __email__ = "s8158863@rz.uni-frankfurt.de" 
 
 from typing import Tuple, List, Dict
 
-def list_of_player(number_of_players = int) -> List[str]:
+def list_of_player(players = int) -> List[str]:
     """
     creates a list with all the names of the players
 
@@ -17,13 +17,13 @@ def list_of_player(number_of_players = int) -> List[str]:
     :rtype [(str)]
     """
     list_of_players = []
-    for i in range(number_of_players):  
+    for i in range(players):  
         names = str(input("Bitte Name des Spielers eingeben: "))
         list_of_players.append(names)
     
     return list_of_players
 
-def create_player_trick(number_players,dict_of_players={}):
+def create_player_trick(players,dict_of_players={}):
 
     """
     creates a dictionairy with the names as a key and the trick as the value
@@ -34,15 +34,15 @@ def create_player_trick(number_players,dict_of_players={}):
     :rtype {(str : int)}
     """
 
-    for i in range (1, number_players + 1):
+    for i in range (1, players + 1):
         dict_of_players.update({i : 0})
     
     return dict_of_players
 
 
-def add_trick(dict_of_player: Dict,winner_list: List[int]):
-    for i in range (0,len(winner_list)):
-        dict_of_player[winner_list[i]]+=1
+def add_points(dict_of_player: Dict,list_of_winner: List[int]):
+    for i in range (0,len(list_of_winner)):
+        dict_of_player[list_of_winner[i]]+=1
 
     return dict_of_player
 

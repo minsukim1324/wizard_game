@@ -1,13 +1,16 @@
 """
-This program is a card game which is very similar to the card game wizard.
+Contains the functions for the cards in wizard
 
 """
-__author__ = "7389272, Kim",",Kang"
+__author__ = "7389272, Kim, 7614343, Kang"
 __email__ = "s8158863@rz.uni-frankfurt.de" 
 
 import random 
 from typing import Tuple, List, Dict
 import cards
+import operator
+
+from player import winner_names
 
 def shuffle_deck(list_cards: List[Tuple[int, str]]) -> List[List[Tuple[int, str]]]:
     """
@@ -69,28 +72,28 @@ def laying_cards(hand_cards: List[Tuple[int,str]],index_of_card: int):
 
 
 
-def card_compare (list_of_played_cards: List, players: int, trumpf: str):
+def card_compare(list_of_played_cards: List, players: int, trumpf: str):
     """
     
     
     """
 
-    winnerlist = []
-    winnerlist.append(list_of_played_cards[0])
-    a = winnerlist[0]
+    winner_list = []
+    winner_list.append(list_of_played_cards[0])
+    a = winner_list[0]
     for i in range(1,(players)):
         b = list_of_played_cards[i]
-        a = winnerlist[0]
+        a = winner_list[0]
         x = cards.bigger_card(a,b,trumpf)
         if x == 0:
-            del winnerlist [:]
-            winnerlist.append(list_of_played_cards[i])
+            del winner_list [:]
+            winner_list.append(list_of_played_cards[i])
         elif x == 1:
-            winnerlist.append(list_of_played_cards[i])
+            winner_list.append(list_of_played_cards[i])
         else: 
             x == 2
             continue
-    return winnerlist
+    return winner_list
 
 
 def get_trump(reamaining_deck: List[Tuple[int,str]]):
@@ -121,6 +124,25 @@ def winner(winner_cards: List[Tuple[int,str]],dict_handcards: Dict,list_keys: Li
                 continue
 
     return winner_list
+
+
+def end_winner(player_trick: Dict):
+    """
+    return the player who has the most tricks
+    """
+    sorted_list = sorted(player_trick.items(), key=operator.itemgetter(1))
+    sorted_list.reverse()
+
+    end_winner = []
+    end_winner.append(sorted_list[0][0])
+    for i in range(len(sorted_list)):
+        if sorted_list[i][1] == sorted_list[i+1][1]:
+            end_winner.append(sorted_list[i-1][0])
+            continue
+        else: 
+            break
+
+    return end_winner
 
 
 if __name__ == "__main__":

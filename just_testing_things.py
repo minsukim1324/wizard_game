@@ -1,4 +1,4 @@
-
+import operator
 b = 1
 c = "aleks"
 points = 0
@@ -11,26 +11,29 @@ def swith_demo(argument):
     return switcher.get(argument, "Invalid month")
 import random
 
+a=(1, 5)
+b=(3, 7)
 
-players_info = {1 : [("rot", 1),("rot", 2)], 2 : [("rgruen", 1),("adfasdf", 2)], 3:[("rgru", 1),("adsdf", 2)], 4:[("ren", 1),("asdf", 2)]}
-c = [("rot", 1),("rgruen", 1),("ren", 1)]
-b = list(players_info)
-print(b)
-print(len(c))
 
-for x in range(0,len(c)):
 
-    for i in range(1,len(b)+1):
-
-        if c[x] in players_info[i]:
-            print (b[i-1])
-            
-            break
-        else:
-            continue
+def create_player_trick(players,dict_of_players={}):
     
-        
+    """
+    creates a dictionairy with the names as a key and the trick as the value
 
+    :param number_players: gives the number of players that are playing 
+    :param list_of_player: gives a list of playernames
+    :return {(str : int)} - returns a dictionary with the name and the number of tricks
+    :rtype {(str : int)}
+    """
+
+    for i in range (1, players + 1):
+        dict_of_players.update({i : 0})
+    
+    return dict_of_players
+
+create_player_trick(2)
+print("'tricks'" )
 
 
 
